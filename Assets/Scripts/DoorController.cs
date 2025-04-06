@@ -1,11 +1,22 @@
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DoorController : MonoBehaviour
 {
-    [SerializeField] private Animator doorAnimator = default;
+    [SerializeField] private Animator anim = default;
+    [SerializeField] private SceneAsset nextScene = default;
 
     public void OpenDoor()
     {
-        doorAnimator.Play("DoorOpen", 0, 0.0f);
+        anim.SetBool("isOpen", true);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            SceneManager.LoadScene(nextScene.name);
+        }
     }
 }

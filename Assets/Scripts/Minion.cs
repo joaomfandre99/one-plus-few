@@ -22,6 +22,7 @@ public class Minion : MonoBehaviour
     {
         if (state == State.Follow)
         {
+            anim.SetBool("isIdle", false);
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 anim.SetBool("isWalking", false);
@@ -33,6 +34,7 @@ public class Minion : MonoBehaviour
         }
         else
         {
+            anim.SetBool("isIdle", true);
             anim.SetBool("isWalking", false);
         }
     }

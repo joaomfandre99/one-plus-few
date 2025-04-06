@@ -10,7 +10,6 @@ public class MinionManager : MonoBehaviour
     [SerializeField] private Material originalMaterial = default;
 
     private List<Minion> allMinions= new List<Minion>();
-    private int controlledMinions = 0;
     private Minion nearestMinion;
 
     private float longPressDuration = 0.5f;
@@ -38,7 +37,7 @@ public class MinionManager : MonoBehaviour
             if (Vector3.Distance(minion.transform.position, transform.position) < whistleRadius && minion.state != Minion.State.Follow)
             {
                 minion.SetTarget(target, 0.25f);
-                controlledMinions++;
+                GameManager.Instance.minionCount++;
             }
         }
     }
@@ -54,7 +53,7 @@ public class MinionManager : MonoBehaviour
             }
         }
         nearestMinion.SetTarget(target, 0.25f);
-        controlledMinions++;
+        GameManager.Instance.minionCount++;
     }
 
     private void AllWaitWhistle()
@@ -64,7 +63,7 @@ public class MinionManager : MonoBehaviour
             if (Vector3.Distance(minion.transform.position, transform.position) < whistleRadius && minion.state != Minion.State.Idle)
             {
                 minion.SetIdle();
-                controlledMinions--;
+                GameManager.Instance.minionCount--;
             }
         }
     }
@@ -80,7 +79,7 @@ public class MinionManager : MonoBehaviour
             }
         }
         nearestMinion.SetIdle();
-        controlledMinions--;
+        GameManager.Instance.minionCount--;
     }
 
     private void HighlightMinions()

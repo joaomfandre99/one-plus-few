@@ -9,12 +9,18 @@ public class SmoothCameraFollow : MonoBehaviour
 
     private void Awake()
     {
-        offset = transform.position - target.position;
+        if (target != null)
+        {
+            offset = transform.position - target.position;
+        }
     }
 
     private void FixedUpdate()
     {
-        Vector3 targetPosition = target.position + offset;
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, smoothTime);
+        if (target != null)
+        {
+            Vector3 targetPosition = target.position + offset;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, smoothTime);
+        }
     }
 }
