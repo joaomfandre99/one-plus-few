@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 public class DoorController : MonoBehaviour
 {
     [SerializeField] private Animator anim = default;
-    [SerializeField] private SceneAsset nextScene = default;
+    [SerializeField] private string nextSceneName = default;
     [SerializeField] private bool hasNextScene = true;
+    [SerializeField] private GameObject canvas = default;
 
     public void OpenDoor()
     {
@@ -17,7 +18,12 @@ public class DoorController : MonoBehaviour
     {
         if (other.CompareTag("Player") && hasNextScene)
         {
-            SceneManager.LoadScene(nextScene.name);
+            SceneManager.LoadScene(nextSceneName);
+        }
+
+        if (other.CompareTag("Player") && !hasNextScene && canvas != null)
+        {
+            canvas.SetActive(true);
         }
     }
 }

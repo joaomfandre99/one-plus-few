@@ -22,21 +22,4 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject); // Avoid duplicates
         }
     }
-
-    void Start()
-    {
-        if (minionCount > 0)
-        {
-            SpawnMinions(minionCount);
-        }
-    }
-
-    private void SpawnMinions(int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            var minion = Instantiate(minionPrefab, player.transform.position + Random.insideUnitSphere, Quaternion.identity);
-            minion.GetComponent<Minion>().SetTarget(player.transform, 0.25f);
-        }
-    }
 }

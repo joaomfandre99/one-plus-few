@@ -52,8 +52,11 @@ public class MinionManager : MonoBehaviour
                 nearestMinion = minion;
             }
         }
-        nearestMinion.SetTarget(target, 0.25f);
-        GameManager.Instance.minionCount++;
+        if (nearestMinion != null)
+        {
+            nearestMinion.SetTarget(target, 0.25f);
+            GameManager.Instance.minionCount++;
+        }
     }
 
     private void AllWaitWhistle()
@@ -78,8 +81,11 @@ public class MinionManager : MonoBehaviour
                 nearestMinion = minion;
             }
         }
-        nearestMinion.SetIdle();
-        GameManager.Instance.minionCount--;
+        if (nearestMinion != null)
+        {
+            nearestMinion.SetIdle();
+            GameManager.Instance.minionCount--;
+        }
     }
 
     private void HighlightMinions()
