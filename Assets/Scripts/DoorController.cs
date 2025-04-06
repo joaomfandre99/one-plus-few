@@ -6,6 +6,7 @@ public class DoorController : MonoBehaviour
 {
     [SerializeField] private Animator anim = default;
     [SerializeField] private SceneAsset nextScene = default;
+    [SerializeField] private bool hasNextScene = true;
 
     public void OpenDoor()
     {
@@ -14,7 +15,7 @@ public class DoorController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && hasNextScene)
         {
             SceneManager.LoadScene(nextScene.name);
         }
