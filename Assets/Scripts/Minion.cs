@@ -6,6 +6,8 @@ public class Minion : MonoBehaviour
 {
     public enum State { Idle, Follow }
 
+    [SerializeField] private Animator anim = default;
+
     [HideInInspector]
     public NavMeshAgent agent = default;
     public State state = default;
@@ -16,10 +18,28 @@ public class Minion : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
+    private void Update()
+    {
+        if (state == State.Follow)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                anim.SetBool("isWalking", false);
+            }
+            else
+            {
+                anim.SetBool("isWalking", true);
+            }
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
+        }
+    }
+
     public void SetTarget(Transform target, float updateTime = 1f)
     {
         state = State.Follow;
-
         if (updateTarget != null)
             StopCoroutine(updateTarget);
 

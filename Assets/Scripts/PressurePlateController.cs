@@ -6,6 +6,7 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] private GameObject trigger = default;
     [SerializeField] private int minAmountRequired = 1;
     [SerializeField] private TextMeshPro text = default;
+    [SerializeField] private Animator anim = default;
 
     private int count = 0;
 
@@ -39,6 +40,7 @@ public class PressurePlate : MonoBehaviour
         {
             trigger.GetComponent<DoorController>().OpenDoor();
             GetComponent<Collider>().enabled = false;
+            anim.SetBool("isPressed", true);
         }
     }
 

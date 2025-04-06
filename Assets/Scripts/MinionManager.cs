@@ -27,7 +27,7 @@ public class MinionManager : MonoBehaviour
     {
         KeyPressHandler(KeyCode.Q);
         KeyPressHandler(KeyCode.E);
-        HighlightMinions();
+        // HighlightMinions();
     }
 
     private void AllFollowWhistle()
