@@ -11,6 +11,11 @@ public class MinionManager : MonoBehaviour
 
     private List<Minion> allMinions= new List<Minion>();
     private int controlledMinions = 0;
+    private Minion nearestMinion;
+
+    private float longPressDuration = 0.5f;
+    private float keyDownTime;
+    private bool keyProcessed = false;
 
     private void Start()
     {
@@ -20,20 +25,14 @@ public class MinionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            FollowWhistle();
-        }
-        else if (Input.GetKey(KeyCode.E))
-        {
-            WaitWhistle();
-        }
-
+        KeyPressHandler(KeyCode.Q);
+        KeyPressHandler(KeyCode.E);
         HighlightMinions();
     }
 
-    private void FollowWhistle()
+    private void AllFollowWhistle()
     {
+        
         foreach (Minion minion in allMinions)
         {
             if (Vector3.Distance(minion.transform.position, transform.position) < whistleRadius && minion.state != Minion.State.Follow)
@@ -43,8 +42,22 @@ public class MinionManager : MonoBehaviour
             }
         }
     }
-    
-    private void WaitWhistle()
+
+    private void FollowWhistle()
+    {
+        var nearestDistance = whistleRadius;
+        foreach (Minion minion in allMinions)
+        {
+            if (Vector3.Distance(minion.transform.position, transform.position) < nearestDistance && minion.state != Minion.State.Follow)
+            {
+                nearestMinion = minion;
+            }
+        }
+        nearestMinion.SetTarget(target, 0.25f);
+        controlledMinions++;
+    }
+
+    private void AllWaitWhistle()
     {
         foreach (Minion minion in allMinions)
         {
@@ -54,6 +67,20 @@ public class MinionManager : MonoBehaviour
                 controlledMinions--;
             }
         }
+    }
+
+    private void WaitWhistle()
+    {
+        var nearestDistance = whistleRadius;
+        foreach (Minion minion in allMinions)
+        {
+            if (Vector3.Distance(minion.transform.position, transform.position) < nearestDistance && minion.state != Minion.State.Idle)
+            {
+                nearestMinion = minion;
+            }
+        }
+        nearestMinion.SetIdle();
+        controlledMinions--;
     }
 
     private void HighlightMinions()
@@ -68,6 +95,57 @@ public class MinionManager : MonoBehaviour
             {
                 minion.GetComponent<MeshRenderer>().material = originalMaterial;
             }
+        }
+    }
+
+    private void KeyPressHandler(KeyCode targetKey)
+    {
+        if (Input.GetKeyDown(targetKey))
+        {
+            keyDownTime = Time.time;
+            keyProcessed = false;
+        }
+
+        if (Input.GetKeyUp(targetKey))
+        {
+            if (!keyProcessed)
+            {
+                OnTap(targetKey);
+            }
+        }
+
+        if (Input.GetKey(targetKey) && !keyProcessed)
+        {
+            float pressDuration = Time.time - keyDownTime;
+
+            if (pressDuration >= longPressDuration)
+            {
+                OnLongPress(targetKey);
+                keyProcessed = true;
+            }
+        }
+    }
+
+    private void OnLongPress(KeyCode targetKey)
+    {
+        if (targetKey == KeyCode.Q)
+        {
+            AllFollowWhistle();
+        }
+        else if (targetKey == KeyCode.E)
+        {
+            AllWaitWhistle();
+        }
+    }
+    private void OnTap(KeyCode targetKey)
+    {
+        if (targetKey == KeyCode.Q)
+        {
+            FollowWhistle();
+        }
+        else if (targetKey == KeyCode.E)
+        {
+            WaitWhistle();
         }
     }
 
